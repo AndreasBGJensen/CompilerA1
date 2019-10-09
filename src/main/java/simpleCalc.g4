@@ -8,8 +8,8 @@ block : s=stmt                  #SingleState
 
 
 
-stmt        :'(while' '(' c=con ')' '{'s=block'})' 	                        # While
-        | '(if('c=con')'' then 'e1=expr' else 'e2=expr ')'        #If
+stmt        :'(while' '(' c=con ')' s=block')' 	              # While
+        | '(if('c=con')'' then 'e1=block' else 'e2=block ')'        #If
         |   x=ID '=' e=expr                # Assig
         | e1=expr                           # StateExpression
         ;

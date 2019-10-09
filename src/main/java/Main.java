@@ -68,7 +68,6 @@ class Interpreter extends AbstractParseTreeVisitor<Double> implements simpleCalc
     public Double visitMoreStare(simpleCalcParser.MoreStareContext ctx) {
         int count =0;
         for(simpleCalcParser.StmtContext s: ctx.ss){
-            System.out.println(count);
             count++;
             visit(s);}
         return null;
@@ -196,11 +195,11 @@ class Interpreter extends AbstractParseTreeVisitor<Double> implements simpleCalc
     public Double visitIf(simpleCalcParser.IfContext ctx) {
         Double abc = visit(ctx.c);
         if(abc.equals(1.0)){
-            System.out.println(abc);
+
             return visit(ctx.e1);
 
         }else {
-            System.out.println(abc);
+
             return visit(ctx.e2);
 
         }
