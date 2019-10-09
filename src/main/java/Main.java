@@ -178,6 +178,18 @@ class Interpreter extends AbstractParseTreeVisitor<Double> implements simpleCalc
 
 
     public Double visitWhile(simpleCalcParser.WhileContext ctx) {
+        Double abc = visit(ctx.c);
+        boolean isTrue = true;
+        if(abc.equals(0.0)) {
+           isTrue = false;
+        }
+
+        while(isTrue){
+
+            if(visit(ctx.c).equals(0.0)) {
+                isTrue = false;
+            }else if(isTrue) visit(ctx.s);
+        }
         return null;
     }
 
@@ -204,7 +216,10 @@ class Interpreter extends AbstractParseTreeVisitor<Double> implements simpleCalc
         return v;
     }
 
+    public Double visitStateExpression(simpleCalcParser.StateExpressionContext ctx) {
 
+        return visit(ctx.e1);
+    }
 
 
 }

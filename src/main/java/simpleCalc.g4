@@ -8,9 +8,10 @@ block : s=stmt                  #SingleState
 
 
 
-stmt        :'while' '(' c=con ')' '{'s=stmt'}' 	                        # While
+stmt        :'(while' '(' c=con ')' '{'s=block'})' 	                        # While
         | '(if('c=con')'' then 'e1=expr' else 'e2=expr ')'        #If
         |   x=ID '=' e=expr                # Assig
+        | e1=expr                           # StateExpression
         ;
 
 expr    	:e1=expr ('*'|'/') e2=expr  # Multiplication
@@ -22,7 +23,7 @@ expr    	:e1=expr ('*'|'/') e2=expr  # Multiplication
         ;
 con         : e1=expr ip=IP e2=expr	    #SmallerLarger
         | e1=expr ep=EP e2=expr         #Equal
-        | e1=expr ap=AP e2=expr         #AndOr
+        | c1=con ap=AP c2=con         #AndOr
         ;
 
 
