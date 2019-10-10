@@ -8,13 +8,13 @@ block : s=stmt                  #SingleState
 
 
 
-stmt        :'(while' '(' c=con ')' s=block')' 	              # While
-        | '(if('c=con')'' then 'e1=block' else 'e2=block ')'        #If
-        |   x=ID '=' e=expr                # Assig
-        | e1=expr                           # StateExpression
+stmt        :'(while' '(' c=con ')' s=block')' 	                # While
+        | '(if('c=con')'' then 'e1=block' else 'e2=block ')'    #If
+        |   x=ID '=' e=expr                                     # Assig
+        | e1=expr                                               # StateExpression
         ;
 
-expr    	:e1=expr ('*'|'/') e2=expr  # Multiplication
+expr    	:e1=expr rp=RP e2=expr  # Multiplication
         | e1=expr op=OP e2=expr         # Addition
         | c=FLOAT     	                # Constant
         | x=ID		                    # Variable
@@ -30,7 +30,7 @@ con         : e1=expr ip=IP e2=expr	    #SmallerLarger
 ID    : ALPHA (ALPHA|NUM)* ;
 FLOAT : NUM+ ('.' NUM+)? ;
 
-
+RP : ('*'|'/') ;
 OP : ('-'|'+') ;
 IP : ('>'|'<'|'>='|'<=');
 EP : ('!='|'==');
