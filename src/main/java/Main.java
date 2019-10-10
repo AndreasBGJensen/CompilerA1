@@ -94,25 +94,29 @@ class Interpreter extends AbstractParseTreeVisitor<Double> implements simpleCalc
         return visit(ctx.e1)*visit(ctx.e2);
     };
 
-    public Double visitAddition(simpleCalcParser.AdditionContext ctx){
-        if (ctx.op.getText().equals("+")){
-            if(env.containsKey(ctx.e1.getText())){
-                Double newValue = visit(ctx.e1)+visit(ctx.e2);
+    public Double visitAddition(simpleCalcParser.AdditionContext ctx) {
+        if (ctx.op.getText().equals("+")) {
+            if (env.containsKey(ctx.e1.getText())) {
+                Double newValue = visit(ctx.e1) + visit(ctx.e2);
                 env.remove(ctx.e1.getText());
-                env.put(ctx.e1.getText(),newValue);
+                env.put(ctx.e1.getText(), newValue);
                 return newValue;
+            } else {
+                return visit(ctx.e1) + visit(ctx.e2);
             }
 
-        }else {
+        } else {
             if (env.containsKey(ctx.e1.getText())) {
                 Double newValue = visit(ctx.e1) - visit(ctx.e2);
                 env.remove(ctx.e1.getText());
                 env.put(ctx.e1.getText(), newValue);
                 return newValue;
+            } else {
+                return visit(ctx.e1) - visit(ctx.e2);
             }
         }
+
             //return visit(ctx.e1)-visit(ctx.e2 );}
-        return null;
     };
 
 
