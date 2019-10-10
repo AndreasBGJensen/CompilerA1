@@ -66,9 +66,7 @@ class Interpreter extends AbstractParseTreeVisitor<Double> implements simpleCalc
     }
 
     public Double visitMoreStare(simpleCalcParser.MoreStareContext ctx) {
-        int count =0;
         for(simpleCalcParser.StmtContext s: ctx.ss){
-            count++;
             visit(s);}
         return null;
     }
@@ -91,7 +89,26 @@ class Interpreter extends AbstractParseTreeVisitor<Double> implements simpleCalc
     };
 
     public Double visitMultiplication(simpleCalcParser.MultiplicationContext ctx){
-        return visit(ctx.e1)*visit(ctx.e2);
+        if (ctx.rp.getText().equals("*")) {
+            if (env.containsKey(ctx.e1.getText())) {
+                Double newValue = visit(ctx.e1) * visit(ctx.e2);
+                env.remove(ctx.e1.getText());
+                env.put(ctx.e1.getText(), newValue);
+                return newValue;
+            } else {
+                return visit(ctx.e1) * visit(ctx.e2);
+            }
+
+        } else {
+            if (env.containsKey(ctx.e1.getText())) {
+                Double newValue = visit(ctx.e1) / visit(ctx.e2);
+                env.remove(ctx.e1.getText());
+                env.put(ctx.e1.getText(), newValue);
+                return newValue;
+            } else {
+                return visit(ctx.e1) / visit(ctx.e2);
+            }
+        }
     };
 
     public Double visitAddition(simpleCalcParser.AdditionContext ctx) {
@@ -179,22 +196,19 @@ class Interpreter extends AbstractParseTreeVisitor<Double> implements simpleCalc
         String option =ctx.ap.getText();
 
         if(option.equals("&&")){
-            if(visit(ctx.c1).equals(1.0)|| visit(ctx.c2).equals(1.0)){
-                return 1.0;
-            }else{
-                return 0.0;
-            }
-
-        }
-        if(option.equals("||")){
             if(visit(ctx.c1).equals(1.0)&& visit(ctx.c2).equals(1.0)){
                 return 1.0;
             }else{
                 return 0.0;
             }
-
         }
-
+        if(option.equals("||")){
+            if(visit(ctx.c1).equals(1.0)|| visit(ctx.c2).equals(1.0)){
+                return 1.0;
+            }else{
+                return 0.0;
+            }
+        }
         return null;
     }
 
@@ -210,7 +224,7 @@ class Interpreter extends AbstractParseTreeVisitor<Double> implements simpleCalc
 
             if(visit(ctx.c).equals(0.0)) {
                 isTrue = false;
-            }else if(isTrue) visit(ctx.s);
+            }else{ visit(ctx.s);}
         }
         return null;
     }
